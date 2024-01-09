@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Consulta de Temperatura</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .container {
+            width: 400px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        h1 {
+            margin-bottom: 20px;
+        }
+        
+        input[type="text"] {
+            width: calc(100% - 12px);
+            padding: 6px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        button {
+            padding: 8px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        p {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Consulta de Temperatura</h1>
+        <input type="text" id="cidade" placeholder="Digite o nome da cidade">
+        <button onclick="buscarTemperatura()">Consultar</button>
+        <p id="resultado"></p>
+    </div>
+
+    <script>
+        async function buscarTemperatura() {
+            const apiKey = 'd48e2e65e296bdb68fd8a1b801f0c18a'; // Sua chave da OpenWeather API
+            const cidade = document.getElementById('cidade').value;
+
+            try {
+                const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cidade}&appid=${apiKey}&units=metric`);
+                const data = await response.json();
+
+                const temperatura = data.main.temp;
+
+                document.getElementById('resultado').innerText = `A temperatura em ${cidade} é de ${temperatura}°C.`;
+            } catch (error) {
+                console.error('Erro:', error);
+                document.getElementById('resultado').innerText = 'Erro ao buscar a temperatura. Verifique o nome da cidade ou sua conexão.';
+            }
+        }
+
+                // Detecta pressionamento da tecla Enter
+                document.getElementById('cidade').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                buscarTemperatura();
+            }
+        });
+    </script>
+</body>
+</html>
